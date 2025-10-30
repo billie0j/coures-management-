@@ -1,0 +1,28 @@
+<svg width="80" height="80" viewBox="0 0 80 80" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="updateGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a8edea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fed6e3;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background circle -->
+  <circle cx="40" cy="40" r="35" fill="url(#updateGradient)" opacity="0.1"/>
+  
+  <!-- Book/Course representation -->
+  <rect x="25" y="25" width="30" height="20" rx="2" fill="url(#updateGradient)"/>
+  <rect x="27" y="27" width="26" height="16" rx="1" fill="white" opacity="0.8"/>
+  
+  <!-- Lines representing text -->
+  <rect x="30" y="30" width="20" height="2" rx="1" fill="url(#updateGradient)"/>
+  <rect x="30" y="34" width="15" height="2" rx="1" fill="url(#updateGradient)" opacity="0.7"/>
+  <rect x="30" y="38" width="18" height="2" rx="1" fill="url(#updateGradient)" opacity="0.5"/>
+  
+  <!-- Edit/Update icon -->
+  <circle cx="55" cy="25" r="10" fill="#10b981"/>
+  <path d="M50 25 L52 27 L60 19" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+  
+  <!-- Pencil -->
+  <rect x="20" y="50" width="3" height="15" rx="1" fill="#f59e0b" transform="rotate(45 21.5 57.5)"/>
+  <polygon points="18,52 20,50 22,52 20,54" fill="#ef4444" transform="rotate(45 20 52)"/>
+</svg>

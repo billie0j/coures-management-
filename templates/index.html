@@ -1,0 +1,121 @@
+{% extends "base.html" %}
+
+{% block title %}Home - Student Course Management System{% endblock %}
+
+{% block content %}
+<div class="hero">
+    <div class="hero-content">
+        <div class="hero-text">
+            <h1>Student Course Management System</h1>
+            <p>Efficiently manage student records and course enrollments with our comprehensive web-based solution.</p>
+            <a href="{{ url_for('add_student') }}" class="btn btn-primary">Get Started</a>
+        </div>
+        <div class="hero-image">
+            <img src="{{ url_for('static', filename='images/hero-illustration.svg') }}" alt="Student Management Illustration" class="hero-illustration">
+        </div>
+    </div>
+</div>
+
+<div class="features-grid">
+    <div class="feature-card fade-in">
+        <div class="feature-icon">
+            <img src="{{ url_for('static', filename='images/add-student-icon.svg') }}" alt="Add Student">
+        </div>
+        <h3 class="feature-title">Add Students</h3>
+        <p class="feature-description">
+            Easily add new student records with unique IDs, personal information, and course enrollments.
+        </p>
+        <a href="{{ url_for('add_student') }}" class="btn btn-primary btn-sm" style="margin-top: 1rem;">
+            Get Started
+        </a>
+    </div>
+
+    <div class="feature-card fade-in">
+        <div class="feature-icon">
+            <img src="{{ url_for('static', filename='images/view-students-icon.svg') }}" alt="View Students">
+        </div>
+        <h3 class="feature-title">View Students</h3>
+        <p class="feature-description">
+            Browse through all student records in a clean, organized table format with course information.
+        </p>
+        <a href="{{ url_for('view_students') }}" class="btn btn-primary btn-sm" style="margin-top: 1rem;">
+            View All
+        </a>
+    </div>
+
+    <div class="feature-card fade-in">
+        <div class="feature-icon">
+            <img src="{{ url_for('static', filename='images/search-student-icon.svg') }}" alt="Search Student">
+        </div>
+        <h3 class="feature-title">Search Students</h3>
+        <p class="feature-description">
+            Quickly find specific students using their unique Student ID for instant access to their details.
+        </p>
+        <a href="{{ url_for('search_student') }}" class="btn btn-primary btn-sm" style="margin-top: 1rem;">
+            Search Now
+        </a>
+    </div>
+
+    <div class="feature-card fade-in">
+        <div class="feature-icon">
+            <img src="{{ url_for('static', filename='images/update-courses-icon.svg') }}" alt="Update Courses">
+        </div>
+        <h3 class="feature-title">Update Courses</h3>
+        <p class="feature-description">
+            Modify and update course enrollments for existing students to keep records current.
+        </p>
+        <a href="{{ url_for('view_students') }}" class="btn btn-primary btn-sm" style="margin-top: 1rem;">
+            Manage Courses
+        </a>
+    </div>
+</div>
+
+<div class="card" style="margin-top: 3rem;">
+    <div class="card-header">
+        <h2 class="card-title">
+            <i class="fas fa-info-circle"></i>
+            System Features
+        </h2>
+    </div>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem;">
+        <div>
+            <h4 style="color: #667eea; margin-bottom: 1rem;">
+                <i class="fas fa-database"></i> Database Management
+            </h4>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 0.5rem 0; border-bottom: 1px solid #e9ecef;">
+                    <i class="fas fa-check text-success"></i> SQLite database integration
+                </li>
+                <li style="padding: 0.5rem 0; border-bottom: 1px solid #e9ecef;">
+                    <i class="fas fa-check text-success"></i> Unique Student ID primary keys
+                </li>
+                <li style="padding: 0.5rem 0;">
+                    <i class="fas fa-check text-success"></i> Multiple course support per student
+                </li>
+            </ul>
+        </div>
+        <div>
+            <h4 style="color: #667eea; margin-bottom: 1rem;">
+                <i class="fas fa-cogs"></i> Core Functionalities
+            </h4>
+            <ul style="list-style: none; padding: 0;">
+                <li style="padding: 0.5rem 0; border-bottom: 1px solid #e9ecef;">
+                    <i class="fas fa-check text-success"></i> CRUD operations (Create, Read, Update, Delete)
+                </li>
+                <li style="padding: 0.5rem 0; border-bottom: 1px solid #e9ecef;">
+                    <i class="fas fa-check text-success"></i> Advanced search functionality
+                </li>
+                <li style="padding: 0.5rem 0;">
+                    <i class="fas fa-check text-success"></i> Data validation and error handling
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<style>
+.text-success {
+    color: #28a745 !important;
+}
+</style>
+{% endblock %}

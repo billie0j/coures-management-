@@ -1,0 +1,68 @@
+<svg width="400" height="300" viewBox="0 0 400 300" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bgGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#667eea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#764ba2;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="bookGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#4facfe;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#00f2fe;stop-opacity:1" />
+    </linearGradient>
+    <linearGradient id="screenGradient" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" style="stop-color:#a8edea;stop-opacity:1" />
+      <stop offset="100%" style="stop-color:#fed6e3;stop-opacity:1" />
+    </linearGradient>
+  </defs>
+  
+  <!-- Background -->
+  <rect width="400" height="300" fill="url(#bgGradient)" opacity="0.1"/>
+  
+  <!-- Laptop -->
+  <rect x="50" y="120" width="180" height="120" rx="8" fill="#2d3748" stroke="#4a5568" stroke-width="2"/>
+  <rect x="60" y="130" width="160" height="90" rx="4" fill="url(#screenGradient)"/>
+  
+  <!-- Laptop screen content -->
+  <rect x="70" y="140" width="140" height="8" rx="2" fill="#667eea" opacity="0.8"/>
+  <rect x="70" y="155" width="100" height="6" rx="1" fill="#764ba2" opacity="0.6"/>
+  <rect x="70" y="168" width="120" height="6" rx="1" fill="#764ba2" opacity="0.6"/>
+  <rect x="70" y="181" width="80" height="6" rx="1" fill="#764ba2" opacity="0.6"/>
+  
+  <!-- Table on screen -->
+  <rect x="75" y="195" width="130" height="20" rx="2" fill="#ffffff" opacity="0.9"/>
+  <line x1="85" y1="200" x2="85" y2="210" stroke="#667eea" stroke-width="1"/>
+  <line x1="125" y1="200" x2="125" y2="210" stroke="#667eea" stroke-width="1"/>
+  <line x1="165" y1="200" x2="165" y2="210" stroke="#667eea" stroke-width="1"/>
+  
+  <!-- Books stack -->
+  <rect x="260" y="180" width="80" height="12" rx="2" fill="#ff6b6b"/>
+  <rect x="265" y="170" width="80" height="12" rx="2" fill="#4ecdc4"/>
+  <rect x="270" y="160" width="80" height="12" rx="2" fill="url(#bookGradient)"/>
+  
+  <!-- Students icons -->
+  <circle cx="320" cy="80" r="20" fill="#feca57"/>
+  <rect x="310" y="95" width="20" height="25" rx="10" fill="#48dbfb"/>
+  
+  <circle cx="280" cy="90" r="18" fill="#ff9ff3"/>
+  <rect x="272" y="103" width="16" height="22" rx="8" fill="#54a0ff"/>
+  
+  <circle cx="360" cy="90" r="18" fill="#5f27cd"/>
+  <rect x="352" y="103" width="16" height="22" rx="8" fill="#00d2d3"/>
+  
+  <!-- Floating elements -->
+  <circle cx="100" cy="60" r="8" fill="#feca57" opacity="0.7">
+    <animate attributeName="cy" values="60;50;60" dur="3s" repeatCount="indefinite"/>
+  </circle>
+  
+  <circle cx="350" cy="40" r="6" fill="#ff6b6b" opacity="0.7">
+    <animate attributeName="cy" values="40;30;40" dur="2s" repeatCount="indefinite"/>
+  </circle>
+  
+  <circle cx="80" cy="40" r="5" fill="#4ecdc4" opacity="0.7">
+    <animate attributeName="cy" values="40;35;40" dur="2.5s" repeatCount="indefinite"/>
+  </circle>
+  
+  <!-- Graduation cap -->
+  <polygon points="150,50 170,45 190,50 190,55 170,60 150,55" fill="#2d3748"/>
+  <rect x="165" y="45" width="10" height="20" fill="#2d3748"/>
+  <circle cx="175" cy="42" r="3" fill="#feca57"/>
+</svg>

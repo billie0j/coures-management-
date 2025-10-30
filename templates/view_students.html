@@ -1,0 +1,242 @@
+{% extends "base.html" %}
+
+{% block title %}View Students - Student Course Management System{% endblock %}
+
+{% block content %}
+<div class="card fade-in">
+    <div class="card-header">
+        <h2 class="card-title">
+            <i class="fas fa-users"></i>
+            All Students
+        </h2>
+        <div style="margin-top: 1rem;">
+            <a href="{{ url_for('add_student') }}" class="btn btn-success">
+                <i class="fas fa-user-plus"></i> Add New Student
+            </a>
+        </div>
+    </div>
+
+    {% if students %}
+        <div style="margin-bottom: 1rem; display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 1rem;">
+            <div style="color: #6c757d;">
+                <i class="fas fa-info-circle"></i>
+                Total Students: <strong>{{ students|length }}</strong>
+            </div>
+            <div>
+                <input 
+                    type="text" 
+                    id="searchInput" 
+                    placeholder="Search by name or ID..." 
+                    style="padding: 0.5rem; border: 2px solid #e9ecef; border-radius: 5px; width: 250px;"
+                >
+            </div>
+        </div>
+
+        <div class="table-container">
+            <table class="table" id="studentsTable">
+                <thead>
+                    <tr>
+                        <th><i class="fas fa-id-card"></i> Student ID</th>
+                        <th><i class="fas fa-user"></i> Name</th>
+                        <th><i class="fas fa-calendar-alt"></i> Age</th>
+                        <th><i class="fas fa-book"></i> Courses</th>
+                        <th><i class="fas fa-cogs"></i> Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for student in students %}
+                    <tr class="student-row">
+                        <td>
+                            <strong style="color: #667eea;">{{ student.student_id }}</strong>
+                        </td>
+                        <td>
+                            <div style="display: flex; align-items: center; gap: 0.5rem;">
+                                <i class="fas fa-user-circle" style="color: #6c757d;"></i>
+                                {{ student.name }}
+                            </div>
+                        </td>
+                        <td>
+                            <span style="background: #e9ecef; padding: 0.25rem 0.5rem; border-radius: 15px; font-size: 0.875rem;">
+                                {{ student.age }} years
+                            </span>
+                        </td>
+                        <td>
+                            <div class="course-tags">
+                                {% for course in student.courses %}
+                                    <span class="course-tag">{{ course.strip() }}</span>
+                                {% endfor %}
+                            </div>
+                        </td>
+                        <td>
+                            <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+                                <a href="{{ url_for('update_courses', student_id=student.student_id) }}" 
+                                   class="btn btn-primary btn-sm" 
+                                   title="Update Courses">
+                                    <i class="fas fa-edit"></i>
+                                </a>
+                                <button type="button" 
+                                        class="btn btn-danger btn-sm" 
+                                        onclick="confirmDelete('{{ student.student_id }}', '{{ student.name }}')"
+                                        title="Delete Student">
+                                    <i class="fas fa-trash"></i>
+                                </button>
+                            </div>
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    {% else %}
+        <div style="text-align: center; padding: 3rem; color: #6c757d;">
+            <i class="fas fa-users" style="font-size: 4rem; margin-bottom: 1rem; opacity: 0.3;"></i>
+            <h3>No Students Found</h3>
+            <p>There are currently no students in the system.</p>
+            <a href="{{ url_for('add_student') }}" class="btn btn-primary" style="margin-top: 1rem;">
+                <i class="fas fa-user-plus"></i> Add Your First Student
+            </a>
+        </div>
+    {% endif %}
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+    <div style="background: white; padding: 2rem; border-radius: 12px; max-width: 400px; width: 90%; text-align: center;">
+        <div style="color: #dc3545; font-size: 3rem; margin-bottom: 1rem;">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h3 style="margin-bottom: 1rem; color: #495057;">Confirm Deletion</h3>
+        <p style="color: #6c757d; margin-bottom: 2rem;">
+            Are you sure you want to delete student <strong id="deleteStudentName"></strong> 
+            (ID: <strong id="deleteStudentId"></strong>)?
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+            <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">
+                <i class="fas fa-times"></i> Cancel
+            </button>
+            <form id="deleteForm" method="POST" style="display: inline;">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Delete Student
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Search functionality
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('searchInput');
+    const table = document.getElementById('studentsTable');
+    const rows = table ? table.getElementsByClassName('student-row') : [];
+
+    if (searchInput && rows.length > 0) {
+        searchInput.addEventListener('input', function() {
+            const searchTerm = this.value.toLowerCase();
+            
+            for (let row of rows) {
+                const studentId = row.cells[0].textContent.toLowerCase();
+                const studentName = row.cells[1].textContent.toLowerCase();
+                const courses = row.cells[3].textContent.toLowerCase();
+                
+                if (studentId.includes(searchTerm) || 
+                    studentName.includes(searchTerm) || 
+                    courses.includes(searchTerm)) {
+                    row.style.display = '';
+                } else {
+                    row.style.display = 'none';
+                }
+            }
+        });
+    }
+});
+
+// Delete confirmation modal
+function confirmDelete(studentId, studentName) {
+    const modal = document.getElementById('deleteModal');
+    const form = document.getElementById('deleteForm');
+    const nameSpan = document.getElementById('deleteStudentName');
+    const idSpan = document.getElementById('deleteStudentId');
+    
+    nameSpan.textContent = studentName;
+    idSpan.textContent = studentId;
+    form.action = `/delete_student/${studentId}`;
+    
+    modal.style.display = 'flex';
+}
+
+function closeDeleteModal() {
+    const modal = document.getElementById('deleteModal');
+    modal.style.display = 'none';
+}
+
+// Close modal when clicking outside
+document.getElementById('deleteModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeDeleteModal();
+    }
+});
+
+// Escape key to close modal
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeDeleteModal();
+    }
+});
+
+// Add loading state to action buttons
+document.querySelectorAll('.btn').forEach(btn => {
+    btn.addEventListener('click', function() {
+        if (this.type === 'submit' || this.href) {
+            const originalContent = this.innerHTML;
+            this.innerHTML = '<i class="fas fa-spinner fa-spin"></i>';
+            this.disabled = true;
+            
+            // Re-enable after a short delay if it's not a form submission
+            if (!this.type === 'submit') {
+                setTimeout(() => {
+                    this.innerHTML = originalContent;
+                    this.disabled = false;
+                }, 1000);
+            }
+        }
+    });
+});
+</script>
+
+<style>
+/* Additional styles for this page */
+.student-row:hover {
+    background-color: #f8f9fa !important;
+    transform: scale(1.01);
+    transition: all 0.2s ease;
+}
+
+#searchInput:focus {
+    outline: none;
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.course-tag {
+    animation: fadeIn 0.3s ease-in;
+}
+
+@media screen and (max-width: 768px) {
+    .table th:nth-child(3),
+    .table td:nth-child(3) {
+        display: none;
+    }
+    
+    .course-tags {
+        max-width: 150px;
+        overflow: hidden;
+    }
+    
+    .course-tag {
+        font-size: 0.75rem;
+        padding: 0.2rem 0.5rem;
+    }
+}
+</style>
+{% endblock %}

@@ -1,0 +1,307 @@
+{% extends "base.html" %}
+
+{% block title %}Search Student - Student Course Management System{% endblock %}
+
+{% block content %}
+<div class="card fade-in">
+    <div class="card-header">
+        <h2 class="card-title">
+            <i class="fas fa-search"></i>
+            Search Student
+        </h2>
+    </div>
+    
+    <form method="POST" action="{{ url_for('search_student') }}">
+        <div class="form-group">
+            <label for="student_id" class="form-label">
+                <i class="fas fa-id-card"></i> Student ID
+            </label>
+            <div style="display: flex; gap: 1rem;">
+                <input 
+                    type="text" 
+                    id="student_id" 
+                    name="student_id" 
+                    class="form-control" 
+                    placeholder="Enter student ID to search..."
+                    required
+                    style="flex: 1;"
+                    value="{{ request.form.student_id if request.form.student_id }}"
+                >
+                <button type="submit" class="btn btn-primary">
+                    <i class="fas fa-search"></i> Search
+                </button>
+            </div>
+            <small style="color: #6c757d; margin-top: 0.5rem; display: block;">
+                Enter the exact Student ID to find the student record.
+            </small>
+        </div>
+    </form>
+</div>
+
+{% if student %}
+<div class="card fade-in">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-user-check"></i>
+            Student Found
+        </h3>
+    </div>
+    
+    <div class="student-details">
+        <div class="detail-row">
+            <span class="detail-label">
+                <i class="fas fa-id-card"></i> Student ID:
+            </span>
+            <span class="detail-value" style="font-weight: 600; color: #667eea;">
+                {{ student.student_id }}
+            </span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">
+                <i class="fas fa-user"></i> Full Name:
+            </span>
+            <span class="detail-value" style="font-weight: 600;">
+                {{ student.name }}
+            </span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">
+                <i class="fas fa-calendar-alt"></i> Age:
+            </span>
+            <span class="detail-value">
+                <span style="background: #e9ecef; padding: 0.25rem 0.75rem; border-radius: 15px; font-size: 0.875rem;">
+                    {{ student.age }} years old
+                </span>
+            </span>
+        </div>
+        
+        <div class="detail-row">
+            <span class="detail-label">
+                <i class="fas fa-book"></i> Enrolled Courses:
+            </span>
+            <div class="detail-value">
+                <div class="course-tags">
+                    {% for course in student.courses %}
+                        <span class="course-tag">{{ course.strip() }}</span>
+                    {% endfor %}
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <div style="margin-top: 2rem; display: flex; gap: 1rem; flex-wrap: wrap;">
+        <a href="{{ url_for('update_courses', student_id=student.student_id) }}" class="btn btn-primary">
+            <i class="fas fa-edit"></i> Update Courses
+        </a>
+        <button type="button" 
+                class="btn btn-danger" 
+                onclick="confirmDelete('{{ student.student_id }}', '{{ student.name }}')">
+            <i class="fas fa-trash"></i> Delete Student
+        </button>
+        <a href="{{ url_for('view_students') }}" class="btn btn-secondary">
+            <i class="fas fa-users"></i> View All Students
+        </a>
+    </div>
+</div>
+{% endif %}
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-lightbulb"></i>
+            Search Tips
+        </h3>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+        <div>
+            <h4 style="color: #667eea; margin-bottom: 1rem;">
+                <i class="fas fa-search-plus"></i> How to Search
+            </h4>
+            <ul style="color: #6c757d; line-height: 1.8; list-style: none; padding: 0;">
+                <li style="padding: 0.5rem 0; border-bottom: 1px solid #e9ecef;">
+                    <i class="fas fa-arrow-right" style="color: #28a745; margin-right: 0.5rem;"></i>
+                    Enter the exact Student ID
+                </li>
+                <li style="padding: 0.5rem 0; border-bottom: 1px solid #e9ecef;">
+                    <i class="fas fa-arrow-right" style="color: #28a745; margin-right: 0.5rem;"></i>
+                    Search is case-sensitive
+                </li>
+                <li style="padding: 0.5rem 0;">
+                    <i class="fas fa-arrow-right" style="color: #28a745; margin-right: 0.5rem;"></i>
+                    Use the complete ID for best results
+                </li>
+            </ul>
+        </div>
+        
+        <div>
+            <h4 style="color: #667eea; margin-bottom: 1rem;">
+                <i class="fas fa-info-circle"></i> Quick Actions
+            </h4>
+            <ul style="color: #6c757d; line-height: 1.8; list-style: none; padding: 0;">
+                <li style="padding: 0.5rem 0; border-bottom: 1px solid #e9ecef;">
+                    <i class="fas fa-edit" style="color: #007bff; margin-right: 0.5rem;"></i>
+                    Update student courses directly
+                </li>
+                <li style="padding: 0.5rem 0; border-bottom: 1px solid #e9ecef;">
+                    <i class="fas fa-trash" style="color: #dc3545; margin-right: 0.5rem;"></i>
+                    Delete student records safely
+                </li>
+                <li style="padding: 0.5rem 0;">
+                    <i class="fas fa-users" style="color: #6c757d; margin-right: 0.5rem;"></i>
+                    Browse all students anytime
+                </li>
+            </ul>
+        </div>
+        
+        <div>
+            <h4 style="color: #667eea; margin-bottom: 1rem;">
+                <i class="fas fa-question-circle"></i> Need Help?
+            </h4>
+            <ul style="color: #6c757d; line-height: 1.8; list-style: none; padding: 0;">
+                <li style="padding: 0.5rem 0; border-bottom: 1px solid #e9ecef;">
+                    <i class="fas fa-users" style="color: #17a2b8; margin-right: 0.5rem;"></i>
+                    <a href="{{ url_for('view_students') }}" style="color: #17a2b8; text-decoration: none;">View all students</a>
+                </li>
+                <li style="padding: 0.5rem 0; border-bottom: 1px solid #e9ecef;">
+                    <i class="fas fa-plus" style="color: #28a745; margin-right: 0.5rem;"></i>
+                    <a href="{{ url_for('add_student') }}" style="color: #28a745; text-decoration: none;">Add new student</a>
+                </li>
+                <li style="padding: 0.5rem 0;">
+                    <i class="fas fa-home" style="color: #6c757d; margin-right: 0.5rem;"></i>
+                    <a href="{{ url_for('index') }}" style="color: #6c757d; text-decoration: none;">Return to home</a>
+                </li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<!-- Delete Confirmation Modal -->
+<div id="deleteModal" style="display: none; position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.5); z-index: 1000; align-items: center; justify-content: center;">
+    <div style="background: white; padding: 2rem; border-radius: 12px; max-width: 400px; width: 90%; text-align: center;">
+        <div style="color: #dc3545; font-size: 3rem; margin-bottom: 1rem;">
+            <i class="fas fa-exclamation-triangle"></i>
+        </div>
+        <h3 style="margin-bottom: 1rem; color: #495057;">Confirm Deletion</h3>
+        <p style="color: #6c757d; margin-bottom: 2rem;">
+            Are you sure you want to delete student <strong id="deleteStudentName"></strong> 
+            (ID: <strong id="deleteStudentId"></strong>)?
+        </p>
+        <div style="display: flex; gap: 1rem; justify-content: center;">
+            <button type="button" class="btn btn-secondary" onclick="closeDeleteModal()">
+                <i class="fas fa-times"></i> Cancel
+            </button>
+            <form id="deleteForm" method="POST" style="display: inline;">
+                <button type="submit" class="btn btn-danger">
+                    <i class="fas fa-trash"></i> Delete Student
+                </button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<script>
+// Auto-focus on search input
+document.addEventListener('DOMContentLoaded', function() {
+    const searchInput = document.getElementById('student_id');
+    if (searchInput && !searchInput.value) {
+        searchInput.focus();
+    }
+    
+    // Add search on Enter key
+    searchInput.addEventListener('keypress', function(e) {
+        if (e.key === 'Enter') {
+            e.preventDefault();
+            this.closest('form').submit();
+        }
+    });
+    
+    // Form submission enhancement
+    const form = document.querySelector('form');
+    form.addEventListener('submit', function(e) {
+        const submitBtn = this.querySelector('button[type="submit"]');
+        const originalContent = submitBtn.innerHTML;
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Searching...';
+        submitBtn.disabled = true;
+    });
+});
+
+// Delete confirmation modal functions
+function confirmDelete(studentId, studentName) {
+    const modal = document.getElementById('deleteModal');
+    const form = document.getElementById('deleteForm');
+    const nameSpan = document.getElementById('deleteStudentName');
+    const idSpan = document.getElementById('deleteStudentId');
+    
+    nameSpan.textContent = studentName;
+    idSpan.textContent = studentId;
+    form.action = `/delete_student/${studentId}`;
+    
+    modal.style.display = 'flex';
+}
+
+function closeDeleteModal() {
+    const modal = document.getElementById('deleteModal');
+    modal.style.display = 'none';
+}
+
+// Close modal when clicking outside
+document.getElementById('deleteModal').addEventListener('click', function(e) {
+    if (e.target === this) {
+        closeDeleteModal();
+    }
+});
+
+// Escape key to close modal
+document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') {
+        closeDeleteModal();
+    }
+});
+
+// Auto-clear search input on focus if there was an error
+const searchInput = document.getElementById('student_id');
+searchInput.addEventListener('focus', function() {
+    // Clear any previous error styling
+    this.style.borderColor = '#e9ecef';
+});
+</script>
+
+<style>
+/* Additional styles for search page */
+.student-details {
+    background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
+    border-radius: 8px;
+    padding: 1.5rem;
+}
+
+.detail-row:hover {
+    background-color: rgba(102, 126, 234, 0.05);
+    border-radius: 5px;
+    transition: all 0.2s ease;
+}
+
+#student_id:focus {
+    border-color: #667eea;
+    box-shadow: 0 0 0 3px rgba(102, 126, 234, 0.1);
+}
+
+.course-tags {
+    margin-top: 0.5rem;
+}
+
+@media screen and (max-width: 768px) {
+    .detail-row {
+        flex-direction: column;
+        align-items: flex-start !important;
+        gap: 0.5rem;
+    }
+    
+    .course-tags {
+        margin-top: 0;
+    }
+}
+</style>
+{% endblock %}

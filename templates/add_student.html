@@ -1,0 +1,176 @@
+{% extends "base.html" %}
+
+{% block title %}Add Student - Student Course Management System{% endblock %}
+
+{% block content %}
+<div class="card fade-in">
+    <div class="card-header">
+        <h2 class="card-title">
+            <i class="fas fa-user-plus"></i>
+            Add New Student
+        </h2>
+    </div>
+    
+    <form method="POST" action="{{ url_for('add_student') }}">
+        <div class="form-group">
+            <label for="student_id" class="form-label">
+                <i class="fas fa-id-card"></i> Student ID *
+            </label>
+            <input 
+                type="text" 
+                id="student_id" 
+                name="student_id" 
+                class="form-control" 
+                placeholder="Enter unique student ID (e.g., STU001)"
+                required
+                maxlength="20"
+            >
+            <small style="color: #6c757d; margin-top: 0.5rem; display: block;">
+                Student ID must be unique and will serve as the primary identifier.
+            </small>
+        </div>
+
+        <div class="form-group">
+            <label for="name" class="form-label">
+                <i class="fas fa-user"></i> Full Name *
+            </label>
+            <input 
+                type="text" 
+                id="name" 
+                name="name" 
+                class="form-control" 
+                placeholder="Enter student's full name"
+                required
+                maxlength="100"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="age" class="form-label">
+                <i class="fas fa-calendar-alt"></i> Age *
+            </label>
+            <input 
+                type="number" 
+                id="age" 
+                name="age" 
+                class="form-control" 
+                placeholder="Enter student's age"
+                required
+                min="1"
+                max="150"
+            >
+        </div>
+
+        <div class="form-group">
+            <label for="courses" class="form-label">
+                <i class="fas fa-book"></i> Courses *
+            </label>
+            <input 
+                type="text" 
+                id="courses" 
+                name="courses" 
+                class="form-control" 
+                placeholder="Enter courses separated by commas (e.g., Mathematics, Physics, Chemistry)"
+                required
+            >
+            <small style="color: #6c757d; margin-top: 0.5rem; display: block;">
+                Enter multiple courses separated by commas. Example: Mathematics, Physics, Chemistry
+            </small>
+        </div>
+
+        <div style="display: flex; gap: 1rem; margin-top: 2rem;">
+            <button type="submit" class="btn btn-success">
+                <i class="fas fa-save"></i> Add Student
+            </button>
+            <a href="{{ url_for('view_students') }}" class="btn btn-secondary">
+                <i class="fas fa-times"></i> Cancel
+            </a>
+        </div>
+    </form>
+</div>
+
+<div class="card">
+    <div class="card-header">
+        <h3 class="card-title">
+            <i class="fas fa-info-circle"></i>
+            Guidelines for Adding Students
+        </h3>
+    </div>
+    
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 2rem;">
+        <div>
+            <h4 style="color: #667eea; margin-bottom: 1rem;">
+                <i class="fas fa-id-badge"></i> Student ID Requirements
+            </h4>
+            <ul style="color: #6c757d; line-height: 1.8;">
+                <li>Must be unique across all students</li>
+                <li>Can contain letters and numbers</li>
+                <li>Maximum 20 characters</li>
+                <li>Examples: STU001, 2024-CS-001, STUDENT_123</li>
+            </ul>
+        </div>
+        
+        <div>
+            <h4 style="color: #667eea; margin-bottom: 1rem;">
+                <i class="fas fa-user-graduate"></i> Student Information
+            </h4>
+            <ul style="color: #6c757d; line-height: 1.8;">
+                <li>Full name is required</li>
+                <li>Age must be a positive number</li>
+                <li>All fields are mandatory</li>
+                <li>Information can be updated later</li>
+            </ul>
+        </div>
+        
+        <div>
+            <h4 style="color: #667eea; margin-bottom: 1rem;">
+                <i class="fas fa-books"></i> Course Information
+            </h4>
+            <ul style="color: #6c757d; line-height: 1.8;">
+                <li>Separate multiple courses with commas</li>
+                <li>Course names are case-sensitive</li>
+                <li>Can be modified after creation</li>
+                <li>Examples: Math, Science, English</li>
+            </ul>
+        </div>
+    </div>
+</div>
+
+<script>
+// Form validation and enhancement
+document.addEventListener('DOMContentLoaded', function() {
+    const form = document.querySelector('form');
+    const studentIdInput = document.getElementById('student_id');
+    const nameInput = document.getElementById('name');
+    const ageInput = document.getElementById('age');
+    const coursesInput = document.getElementById('courses');
+
+    // Real-time validation
+    studentIdInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^a-zA-Z0-9_-]/g, '');
+    });
+
+    nameInput.addEventListener('input', function() {
+        this.value = this.value.replace(/[^a-zA-Z\s]/g, '');
+    });
+
+    ageInput.addEventListener('input', function() {
+        if (this.value < 1) this.value = 1;
+        if (this.value > 150) this.value = 150;
+    });
+
+    // Form submission enhancement
+    form.addEventListener('submit', function(e) {
+        const submitBtn = this.querySelector('button[type="submit"]');
+        submitBtn.innerHTML = '<i class="fas fa-spinner fa-spin"></i> Adding Student...';
+        submitBtn.disabled = true;
+    });
+
+    // Auto-format courses input
+    coursesInput.addEventListener('blur', function() {
+        const courses = this.value.split(',').map(course => course.trim()).filter(course => course);
+        this.value = courses.join(', ');
+    });
+});
+</script>
+{% endblock %}
